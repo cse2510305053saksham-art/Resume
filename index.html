@@ -1,236 +1,467 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saksham | 3D Portfolio</title>
+    <meta name="description"
+        content="Saksham Thakur — AI & Data Science student at RGGEC. Building at the intersection of AI, web dev, and cybersecurity.">
+    <title>Saksham Thakur | Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    <!-- Boxicons for 3D-like icons -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <!-- Loading Screen -->
+
+    <!-- ══ Loading Screen ═══════════════════════════════════════════ -->
     <div id="loading">
-        <div class="loader">
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <div class="ring"></div>
-            <span>Loading...</span>
+        <div class="loader-wrap">
+            <div class="loader">
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+            </div>
+            <p class="loader-text">Loading Portfolio…</p>
         </div>
     </div>
 
-    <!-- WebGL Background -->
+    <!-- ══ WebGL Canvas ══════════════════════════════════════════════ -->
     <canvas id="bg-canvas"></canvas>
 
-    <!-- Drone Overlay (scroll-driven) -->
+    <!-- ══ Custom Cursor ════════════════════════════════════════════ -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- ══ Navigation ═══════════════════════════════════════════════ -->
+    <nav id="navbar">
+        <a href="#hero" class="nav-logo">ST<span class="accent">.</span></a>
+        <ul class="nav-links" role="navigation">
+            <li><a href="#hero" class="nav-link active">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#achievements" class="nav-link">Journey</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="./Saksham_Thakur_Resume.pdf" class="btn-outline-sm" download><i class='bx bx-download'></i>
+                Resume</a>
+            <button id="theme-toggle" aria-label="Toggle theme"><i class='bx bx-moon'></i></button>
+        </div>
+    </nav>
+
+    <!-- ══ Drone Overlay ════════════════════════════════════════════ -->
     <div id="drone-wrapper">
         <div id="drone-container">
-            <!-- Drone SVG: top-down quadcopter view -->
-            <svg id="drone-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="110" height="110">
+            <svg id="drone-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100" height="100">
                 <defs>
                     <filter id="drone-glow" x="-40%" y="-40%" width="180%" height="180%">
-                        <feGaussianBlur stdDeviation="1.8" result="blur"/>
-                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        <feGaussianBlur stdDeviation="1.6" result="blur" />
+                        <feMerge>
+                            <feMergeNode in="blur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
                     </filter>
                 </defs>
-                <!-- Arms -->
-                <line x1="24" y1="24" x2="43" y2="43" stroke="#00f2fe" stroke-width="2.5" stroke-linecap="round" filter="url(#drone-glow)"/>
-                <line x1="76" y1="24" x2="57" y2="43" stroke="#00f2fe" stroke-width="2.5" stroke-linecap="round" filter="url(#drone-glow)"/>
-                <line x1="24" y1="76" x2="43" y2="57" stroke="#00f2fe" stroke-width="2.5" stroke-linecap="round" filter="url(#drone-glow)"/>
-                <line x1="76" y1="76" x2="57" y2="57" stroke="#00f2fe" stroke-width="2.5" stroke-linecap="round" filter="url(#drone-glow)"/>
-                <!-- Body -->
-                <rect x="40" y="40" width="20" height="20" rx="4" fill="#050510" stroke="#00f2fe" stroke-width="1.5"/>
-                <!-- Rotor 1: top-left (blue) -->
+                <line x1="24" y1="24" x2="43" y2="43" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round"
+                    filter="url(#drone-glow)" />
+                <line x1="76" y1="24" x2="57" y2="43" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round"
+                    filter="url(#drone-glow)" />
+                <line x1="24" y1="76" x2="43" y2="57" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round"
+                    filter="url(#drone-glow)" />
+                <line x1="76" y1="76" x2="57" y2="57" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round"
+                    filter="url(#drone-glow)" />
+                <rect x="40" y="40" width="20" height="20" rx="4" fill="#050510" stroke="#00f2fe" stroke-width="1.5" />
                 <g class="rotor r1">
-                    <circle cx="17" cy="17" r="12" fill="rgba(0,242,254,0.06)" stroke="#00f2fe" stroke-width="1" stroke-dasharray="4 3"/>
-                    <line x1="7" y1="17" x2="27" y2="17" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <line x1="17" y1="7" x2="17" y2="27" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <circle cx="17" cy="17" r="2.5" fill="#00ff88"/>
+                    <circle cx="17" cy="17" r="11" fill="rgba(0,242,254,0.05)" stroke="#00f2fe" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="7" y1="17" x2="27" y2="17" stroke="#00f2fe" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <line x1="17" y1="7" x2="17" y2="27" stroke="#00f2fe" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <circle cx="17" cy="17" r="2" fill="#00ff88" />
                 </g>
-                <!-- Rotor 2: top-right (purple) -->
                 <g class="rotor r2">
-                    <circle cx="83" cy="17" r="12" fill="rgba(155,89,255,0.06)" stroke="#9b59ff" stroke-width="1" stroke-dasharray="4 3"/>
-                    <line x1="73" y1="17" x2="93" y2="17" stroke="#9b59ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <line x1="83" y1="7" x2="83" y2="27" stroke="#9b59ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <circle cx="83" cy="17" r="2.5" fill="#ff4444"/>
+                    <circle cx="83" cy="17" r="11" fill="rgba(155,89,255,0.05)" stroke="#9b59ff" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="73" y1="17" x2="93" y2="17" stroke="#9b59ff" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <line x1="83" y1="7" x2="83" y2="27" stroke="#9b59ff" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <circle cx="83" cy="17" r="2" fill="#ff5555" />
                 </g>
-                <!-- Rotor 3: bottom-left (purple) -->
                 <g class="rotor r3">
-                    <circle cx="17" cy="83" r="12" fill="rgba(155,89,255,0.06)" stroke="#9b59ff" stroke-width="1" stroke-dasharray="4 3"/>
-                    <line x1="7" y1="83" x2="27" y2="83" stroke="#9b59ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <line x1="17" y1="73" x2="17" y2="93" stroke="#9b59ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <circle cx="17" cy="83" r="2.5" fill="#ff4444"/>
+                    <circle cx="17" cy="83" r="11" fill="rgba(155,89,255,0.05)" stroke="#9b59ff" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="7" y1="83" x2="27" y2="83" stroke="#9b59ff" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <line x1="17" y1="73" x2="17" y2="93" stroke="#9b59ff" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <circle cx="17" cy="83" r="2" fill="#ff5555" />
                 </g>
-                <!-- Rotor 4: bottom-right (blue) -->
                 <g class="rotor r4">
-                    <circle cx="83" cy="83" r="12" fill="rgba(0,242,254,0.06)" stroke="#00f2fe" stroke-width="1" stroke-dasharray="4 3"/>
-                    <line x1="73" y1="83" x2="93" y2="83" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <line x1="83" y1="73" x2="83" y2="93" stroke="#00f2fe" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
-                    <circle cx="83" cy="83" r="2.5" fill="#00ff88"/>
+                    <circle cx="83" cy="83" r="11" fill="rgba(0,242,254,0.05)" stroke="#00f2fe" stroke-width="1"
+                        stroke-dasharray="4 3" />
+                    <line x1="73" y1="83" x2="93" y2="83" stroke="#00f2fe" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <line x1="83" y1="73" x2="83" y2="93" stroke="#00f2fe" stroke-width="2" stroke-linecap="round"
+                        opacity="0.85" />
+                    <circle cx="83" cy="83" r="2" fill="#00ff88" />
                 </g>
-                <!-- Camera lens -->
-                <circle cx="50" cy="50" r="6" fill="#0a0a2e" stroke="#00f2fe" stroke-width="1"/>
-                <circle cx="50" cy="50" r="3" fill="#00f2fe" opacity="0.7"/>
+                <circle cx="50" cy="50" r="5.5" fill="#0a0a2e" stroke="#00f2fe" stroke-width="1" />
+                <circle cx="50" cy="50" r="2.5" fill="#00f2fe" opacity="0.7" />
             </svg>
-            <!-- Spotlight beam below drone -->
             <div id="drone-spotlight"></div>
-            <!-- Section label tag -->
-            <div id="drone-label">Hero</div>
+            <div id="drone-label">HERO</div>
         </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- ══ Main Content ══════════════════════════════════════════════ -->
     <main>
-        <!-- Hero Section -->
+
+        <!-- ─── HERO ──────────────────────────────────────────────── -->
         <section id="hero">
-            <div class="hero-card glass-panel" data-tilt>
-                <div class="profile-img-wrapper">
-                    <img src="./profile.png" alt="Saksham" class="profile-img">
-                    <div class="glow-ring"></div>
+            <div class="hero-inner">
+                <!-- Left: Text content -->
+                <div class="hero-text">
+                    <div class="hero-badge"><span class="badge-dot"></span>Open to opportunities</div>
+                    <h1 class="hero-name">
+                        Hi, I'm <br>
+                        <span class="name-grad">Saksham</span>
+                    </h1>
+                    <p class="hero-role">AI &amp; Data Science Student · Web Developer</p>
+                    <p class="hero-desc">
+                        Building intelligent, high-performance web experiences at the crossroads of
+                        <em>AI</em>, <em>cybersecurity</em>, and <em>modern front-end engineering</em>.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn-primary"><i class='bx bx-rocket'></i> View Projects</a>
+                        <a href="#contact" class="btn-ghost"><i class='bx bx-mail-send'></i> Say Hello</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="h-stat">
+                            <strong class="stat-num" data-target="3">0</strong>
+                            <span>Projects</span>
+                        </div>
+                        <div class="h-stat-sep"></div>
+                        <div class="h-stat">
+                            <strong class="stat-num" data-target="3">0</strong>
+                            <span>Hackathons</span>
+                        </div>
+                        <div class="h-stat-sep"></div>
+                        <div class="h-stat">
+                            <strong class="stat-num" data-target="0">0</strong>
+                            <span>Open Source</span>
+                        </div>
+                    </div>
                 </div>
-                <h1 class="name">Saksham</h1>
-                <p class="subtitle">CSE Student | AI Enthusiast</p>
-                <div class="btn-group">
-                    <a href="#projects" class="btn primary-btn">View Projects</a>
-                    <a href="./Saksham_Thakur_Resume.pdf" class="btn secondary-btn" download="Saksham_Thakur_Resume.pdf">Download Resume</a>
+
+                <!-- Right: Profile visual -->
+                <div class="hero-visual">
+                    <div class="profile-ring-wrap" data-tilt data-tilt-max="12" data-tilt-glare="true"
+                        data-tilt-max-glare="0.15" data-tilt-scale="1.04">
+                        <div class="profile-glow-1"></div>
+                        <div class="profile-glow-2"></div>
+                        <div class="profile-frame">
+                            <img src="./profile.png" alt="Saksham" class="profile-img" id="profile-img">
+                            <div class="profile-fallback" id="profile-fallback">S</div>
+                        </div>
+                        <div class="orbit-ring"></div>
+                        <!-- Floating badges -->
+                        <div class="float-badge fb-tl"><i class='bx bxl-python'></i> Python</div>
+                        <div class="float-badge fb-br"><i class='bx bx-brain'></i> AI / ML</div>
+                    </div>
                 </div>
             </div>
+            <div class="scroll-hint"><span></span>Scroll</div>
         </section>
 
-        <!-- About Section -->
+        <!-- ─── ABOUT ─────────────────────────────────────────────── -->
         <section id="about">
-            <div class="section-title">
-                <h2>About <span class="neon-text">Me</span></h2>
-            </div>
-            <div class="about-content glass-panel" data-tilt>
-                <p>AI & Data Science B.Tech Student at RGGEC | Exploring the intersection of AI and cybersecurity.</p>
+            <div class="section-wrap">
+                <div class="section-label">About Me</div>
+                <h2 class="section-heading">Who I <span class="accent-text">Am</span></h2>
+                <p class="section-sub">Driven engineer. Curious learner. Builder of things that matter.</p>
+
+                <div class="about-grid">
+                    <div class="about-card glass-card" data-tilt data-tilt-max="8">
+                        <div class="about-card-icon"><i class='bx bx-user-circle'></i></div>
+                        <h3>The Builder</h3>
+                        <p>AI &amp; Data Science B.Tech student at RGGEC. I explore where <strong>Artificial
+                                Intelligence</strong> meets <strong>Cybersecurity</strong> to build systems that
+                            genuinely solve problems.</p>
+                    </div>
+                    <div class="about-card glass-card" data-tilt data-tilt-max="8">
+                        <div class="about-card-icon"><i class='bx bx-code-alt'></i></div>
+                        <h3>The Developer</h3>
+                        <p>I craft clean, performant web experiences with a focus on 3D interactivity and modern design
+                            patterns. Good code is <strong>purposeful art</strong>.</p>
+                    </div>
+                    <div class="about-card glass-card" data-tilt data-tilt-max="8">
+                        <div class="about-card-icon"><i class='bx bx-trophy'></i></div>
+                        <h3>The Competitor</h3>
+                        <p>Hackathons are my arena. I thrive under pressure — turning <strong>creative ideas into
+                                working demos</strong> under tight deadlines.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Skills Section -->
+        <!-- ─── SKILLS ────────────────────────────────────────────── -->
         <section id="skills">
-            <div class="section-title">
-                <h2>My <span class="neon-text">Skills</span></h2>
-            </div>
-            <div class="skills-grid">
-                <div class="skill-card glass-panel">
-                    <i class='bx bxl-python'></i>
-                    <h3>Python</h3>
-                </div>
-                <div class="skill-card glass-panel">
-                    <i class='bx bxl-html5'></i>
-                    <h3>HTML/CSS/JS</h3>
-                </div>
-                <div class="skill-card glass-panel">
-                    <i class='bx bx-brain'></i>
-                    <h3>Basic AI</h3>
-                </div>
-                <div class="skill-card glass-panel">
-                    <i class='bx bxl-git'></i>
-                    <h3>Git & GitHub</h3>
+            <div class="section-wrap">
+                <div class="section-label">Technical Stack</div>
+                <h2 class="section-heading">My <span class="accent-text">Skills</span></h2>
+                <p class="section-sub">Languages, frameworks, and tools I work with regularly.</p>
+
+                <div class="skills-grid">
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bxl-python skill-icon'></i>
+                        <h3>Python</h3>
+
+
+                    </div>
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bxl-html5 skill-icon'></i>
+                        <h3>HTML / CSS / JS</h3>
+
+
+                    </div>
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bx-brain skill-icon'></i>
+                        <h3>AI / ML</h3>
+
+
+                    </div>
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bxl-git skill-icon'></i>
+                        <h3>Git &amp; GitHub</h3>
+
+
+                    </div>
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bx-server skill-icon'></i>
+                        <h3>Backend / APIs</h3>
+
+
+                    </div>
+                    <div class="skill-card glass-card" data-tilt data-tilt-max="14" data-tilt-scale="1.05">
+                        <i class='bx bx-shield skill-icon'></i>
+                        <h3>Cybersecurity</h3>
+
+
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
+        <!-- ─── PROJECTS ──────────────────────────────────────────── -->
         <section id="projects">
-            <div class="section-title">
-                <h2>Featured <span class="neon-text">Projects</span></h2>
-            </div>
-            <div class="projects-grid">
-                <div class="project-card glass-panel">
-                    <h3>Project Alpha</h3>
-                    <p>An AI-powered document analyzer.</p>
-                    <div class="links">
-                        <a href="#" class="project-link"><i class='bx bxl-github'></i> Code</a>
-                        <a href="#" class="project-link"><i class='bx bx-link-external'></i> Live Demo</a>
-                    </div>
-                </div>
-                <div class="project-card glass-panel">
-                    <h3>Web UI Component</h3>
-                    <p>A beautiful set of interactive CSS elements.</p>
-                    <div class="links">
-                        <a href="#" class="project-link"><i class='bx bxl-github'></i> Code</a>
-                        <a href="#" class="project-link"><i class='bx bx-link-external'></i> Live Demo</a>
-                    </div>
+            <div class="section-wrap">
+                <div class="section-label">Work</div>
+                <h2 class="section-heading">Featured <span class="accent-text">Projects</span></h2>
+                <p class="section-sub">Things I've built — real problems, real solutions.</p>
+
+                <div class="projects-grid">
+                    <article class="project-card glass-card" data-tilt data-tilt-max="8">
+                        <header class="pc-header">
+                            <div class="pc-tags">
+                                <span class="pc-tag">Python</span>
+                                <span class="pc-tag">NLP</span>
+                                <span class="pc-tag">AI</span>
+                            </div>
+                            <span class="pc-num">01</span>
+                        </header>
+                        <h3>AI Document Analyser</h3>
+                        <p>Intelligent system that parses, summarises, and extracts insights from documents using NLP
+                            pipelines and transformer models.</p>
+                        <footer class="pc-footer">
+                            <a href="#" class="pc-link"><i class='bx bxl-github'></i> Code</a>
+                            <a href="#" class="pc-link"><i class='bx bx-link-external'></i> Live</a>
+                        </footer>
+                    </article>
+
+                    <article class="project-card glass-card" data-tilt data-tilt-max="8">
+                        <header class="pc-header">
+                            <div class="pc-tags">
+                                <span class="pc-tag">HTML</span>
+                                <span class="pc-tag">CSS</span>
+                                <span class="pc-tag">JS</span>
+                            </div>
+                            <span class="pc-num">02</span>
+                        </header>
+                        <h3>3D UI Component Library</h3>
+                        <p>Reusable glassmorphic, tilt-interactive components with smooth micro-animations and a
+                            coherent dark design system.</p>
+                        <footer class="pc-footer">
+                            <a href="#" class="pc-link"><i class='bx bxl-github'></i> Code</a>
+                            <a href="#" class="pc-link"><i class='bx bx-link-external'></i> Live</a>
+                        </footer>
+                    </article>
+
+                    <article class="project-card glass-card" data-tilt data-tilt-max="8">
+                        <header class="pc-header">
+                            <div class="pc-tags">
+                                <span class="pc-tag">Python</span>
+                                <span class="pc-tag">ML</span>
+                                <span class="pc-tag">Security</span>
+                            </div>
+                            <span class="pc-num">03</span>
+                        </header>
+                        <h3>Cyber Threat Detector</h3>
+                        <p>ML-powered IDS that analyses network traffic patterns to identify anomalies and potential
+                            intrusions in real time.</p>
+                        <footer class="pc-footer">
+                            <a href="#" class="pc-link"><i class='bx bxl-github'></i> Code</a>
+                            <a href="#" class="pc-link"><i class='bx bx-link-external'></i> Live</a>
+                        </footer>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- Achievements Section -->
+        <!-- ─── JOURNEY ───────────────────────────────────────────── -->
         <section id="achievements">
-            <div class="section-title">
-                <h2>My <span class="neon-text">Journey</span></h2>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item glass-panel">
-                    <h4>Actively Participate in Hackathons</h4>
-                    <p>Regularly take part in hackathons to build real-world projects, collaborate with teams, and sharpen problem-solving skills.</p>
-                </div>
-                <div class="timeline-item glass-panel">
-                    <h4>Open Source Contributor</h4>
-                    <p>Contributed to major ML libraries on GitHub.</p>
+            <div class="section-wrap">
+                <div class="section-label">Experience</div>
+                <h2 class="section-heading">My <span class="accent-text">Journey</span></h2>
+                <p class="section-sub">Milestones that shaped who I am as an engineer.</p>
+
+                <div class="timeline">
+                    <div class="tl-item glass-card" data-tilt data-tilt-max="5">
+                        <div class="tl-icon"><i class='bx bx-book-open'></i></div>
+                        <div class="tl-content">
+                            <span class="tl-year">2025</span>
+                            <h4>B.Tech — AI &amp; Data Science</h4>
+                            <p>Enrolled at RGGEC. Deepening expertise in algorithms, ML, data pipelines, and systems
+                                design.</p>
+                        </div>
+                    </div>
+                    <div class="tl-item glass-card" data-tilt data-tilt-max="5">
+                        <div class="tl-icon"><i class='bx bx-trophy'></i></div>
+                        <div class="tl-content">
+                            <span class="tl-year">2026</span>
+                            <h4>Started Participating in Hackathons</h4>
+                            <p>Regularly competing in national-level hackathons — building real-world solutions under
+                                tight deadlines and collaborating in cross-functional teams.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Social & Contact -->
+        <!-- ─── CONTACT ───────────────────────────────────────────── -->
         <section id="contact">
-            <div class="section-title">
-                <h2>Get in <span class="neon-text">Touch</span></h2>
-            </div>
-            <div class="contact-wrapper">
-                <div class="socials">
-                    <a href="https://www.linkedin.com/in/saksham-thakur-b686a4384" target="_blank" rel="noopener" class="social-icon" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
-                    <a href="mailto:tsaksham94189@gmail.com" class="social-icon" title="Gmail"><i class='bx bxl-gmail'></i></a>
-                    <a href="https://www.instagram.com/_saksham_929/" target="_blank" rel="noopener" class="social-icon" title="Instagram"><i class='bx bxl-instagram'></i></a>
+            <div class="section-wrap">
+                <div class="section-label">Let's Talk</div>
+                <h2 class="section-heading">Get in <span class="accent-text">Touch</span></h2>
+                <p class="section-sub">Whether it's a project, opportunity, or just a chat — I'd love to hear from you.
+                </p>
+
+                <div class="contact-layout">
+                    <!-- Left: Info -->
+                    <div class="contact-info">
+                        <div class="contact-info-item">
+                            <div class="ci-icon"><i class='bx bx-envelope'></i></div>
+                            <div>
+                                <span class="ci-label">Email</span>
+                                <a href="mailto:tsaksham94189@gmail.com" class="ci-value">tsaksham94189@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <div class="ci-icon"><i class='bx bx-map-pin'></i></div>
+                            <div>
+                                <span class="ci-label">Location</span>
+                                <span class="ci-value">India 🇮🇳</span>
+                            </div>
+                        </div>
+                        <div class="socials-row">
+                            <a href="https://www.linkedin.com/in/saksham-thakur-b686a4384" target="_blank"
+                                rel="noopener" class="social-btn" title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                            <a href="mailto:tsaksham94189@gmail.com" class="social-btn" title="Gmail"><i
+                                    class='bx bxl-gmail'></i></a>
+                            <a href="https://www.instagram.com/_saksham_929/" target="_blank" rel="noopener"
+                                class="social-btn" title="Instagram"><i class='bx bxl-instagram'></i></a>
+                            <a href="#" target="_blank" rel="noopener" class="social-btn" title="GitHub"><i
+                                    class='bx bxl-github'></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Form -->
+                    <form class="contact-form glass-card" id="contact-form" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cf-name">Name</label>
+                                <input type="text" id="cf-name" placeholder="Your name" required autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="cf-email">Email</label>
+                                <input type="email" id="cf-email" placeholder="your@email.com" required
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cf-msg">Message</label>
+                            <textarea id="cf-msg" placeholder="Tell me what's on your mind…" rows="5"
+                                required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary submit-btn" id="submit-btn">
+                            <span>Send Message</span><i class='bx bx-send'></i>
+                        </button>
+                    </form>
                 </div>
-                
-                <form class="contact-form glass-panel">
-                    <input type="text" placeholder="Name" required>
-                    <input type="email" placeholder="Email" required>
-                    <textarea placeholder="Message" rows="5" required></textarea>
-                    <button type="submit" class="btn primary-btn send-btn">Send Message <i class='bx bx-send'></i></button>
-                    <p class="email-text">Or email me directly: <a href="mailto:tsaksham94189@gmail.com" class="neon-text" style="text-decoration:none;">tsaksham94189@gmail.com</a></p>
-                </form>
             </div>
         </section>
+
     </main>
 
-    <!-- AI Chatbot Box -->
-    <div id="chatbot-container" class="glass-panel hidden">
+    <!-- ══ Footer ═══════════════════════════════════════════════════ -->
+    <footer id="footer">
+        <div class="footer-inner">
+            <span class="footer-logo">ST<span class="accent">.</span></span>
+            <p>Built by Saksham Thakur · <span id="year"></span></p>
+            <div class="footer-links">
+                <a href="#hero">Back to top <i class='bx bx-up-arrow-alt'></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ══ AI Chatbot ════════════════════════════════════════════════ -->
+    <div id="chatbot-container" class="chat-panel hidden">
         <div class="chat-header">
-            <h3>AI Assistant</h3>
-            <button id="close-chat"><i class='bx bx-x'></i></button>
+            <div class="chat-title">
+                <span class="chat-avatar"><i class='bx bx-bot'></i></span>
+                <div>
+                    <h3>AI Assistant</h3>
+                    <span class="chat-status">Online</span>
+                </div>
+            </div>
+            <button id="close-chat" aria-label="Close"><i class='bx bx-x'></i></button>
         </div>
         <div class="chat-body" id="chat-body">
-            <div class="message bot">Hello! Ask me about Saksham's skills, projects, or education.</div>
+            <div class="message bot">Hi! 👋 Ask me anything about Saksham — skills, projects, or education.</div>
         </div>
         <div class="chat-footer">
-            <input type="text" id="chat-input" placeholder="Type a message...">
-            <button id="send-btn"><i class='bx bx-send'></i></button>
+            <input type="text" id="chat-input" placeholder="Ask something…" autocomplete="off">
+            <button id="send-btn" aria-label="Send"><i class='bx bx-send'></i></button>
         </div>
     </div>
-    
-    <button id="chatbot-toggle" class="glow-btn">
-        <i class='bx bx-message-rounded-dots'></i> Ask Me
+
+    <button id="chatbot-toggle" aria-label="Open AI chat">
+        <i class='bx bx-message-rounded-dots'></i>
     </button>
 
-    <!-- Light / Dark mode toggle -->
-    <button id="theme-toggle" aria-label="Toggle light/dark mode">
-        <i class='bx bx-moon'></i>
-    </button>
-
-    <!-- Scripts -->
+    <!-- ══ Scripts ═══════════════════════════════════════════════════ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Vanilla Tilt for 3D card tilt effect without extra canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
