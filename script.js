@@ -44,12 +44,13 @@ function init() {
 
     // ─── Three.js Setup ────────────────────────────────────────
     const canvas = document.getElementById('bg-canvas');
-    if (!canvas) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, 0.1, 100);
     camera.position.set(0, 0, 12);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = canvas
+        ? new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+        : new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -367,8 +368,10 @@ function init() {
             bgGroups.forEach((g, i) => setGroupAlpha(g, Math.max(0, 1 - Math.abs(i - sf) * 2.2)));
 
             // active nav link
-            const si = Math.min(Math.round(prog * 5), 5);
-            document.querySelectorAll('.nav-link').forEach((a, i) => a.classList.toggle('active', i === si));
+            const navLinks = document.querySelectorAll('.nav-link');
+            const maxIndex = Math.max(navLinks.length - 1, 0);
+            const si = Math.min(Math.round(prog * maxIndex), maxIndex);
+            navLinks.forEach((a, i) => a.classList.toggle('active', i === si));
         }
     });
 
@@ -496,11 +499,13 @@ function init() {
     const chatBody = document.getElementById('chat-body');
 
     chatToggle?.addEventListener('click', () => {
+        if (!chatContainer) return;
         chatContainer.classList.remove('hidden');
         chatToggle.style.display = 'none';
         chatInput?.focus();
     });
     closeChat?.addEventListener('click', () => {
+        if (!chatContainer) return;
         chatContainer.classList.add('hidden');
         setTimeout(() => { if (chatToggle) chatToggle.style.display = 'flex'; }, 380);
     });
