@@ -517,7 +517,7 @@ function init() {
         hackathon: 'Saksham regularly competes in hackathons, building real solutions under pressure.',
         contact: 'Email: tsaksham94189@gmail.com — or use the Contact form!',
         linkedin: 'LinkedIn link is in the Contact section!',
-        github: 'GitHub link is in the Contact section!',
+        github: 'GitHub: https://github.com/Havoc-terminal',
         hello: 'Hey! 👋 Ask me about Saksham\'s skills, projects, or education.',
         hi: 'Hello! What would you like to know about Saksham?',
         thanks: 'You\'re welcome! Feel free to reach out anytime. 🚀',
