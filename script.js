@@ -89,6 +89,36 @@ function init() {
         });
     }
 
+    const HUD_STATES = [
+        { mode: 'BOOT', title: 'SYSTEM BOOT', copy: 'Initializing the machine and loading the first visual layer.', focus: 'Binary stream' },
+        { mode: 'CPU', title: 'PROCESSOR CORE', copy: 'The machine frame locks in and the processor architecture comes alive.', focus: 'CPU lattice' },
+        { mode: 'AI', title: 'NEURAL STACK', copy: 'Connected nodes pulse like an inference engine in motion.', focus: 'AI network' },
+        { mode: 'GIT', title: 'VERSION GRAPH', copy: 'Branches and commits spread across the canvas like a development graph.', focus: 'Commit graph' },
+        { mode: 'BUILD', title: 'THROUGHPUT MONITOR', copy: 'The interface behaves like a live performance monitor under load.', focus: 'Frame metrics' },
+        { mode: 'NET', title: 'NETWORK LINK', copy: 'Signals route outward through a machine-like mesh of nodes.', focus: 'Packet mesh' },
+    ];
+
+    const hud = {
+        mode: document.getElementById('hud-mode'),
+        title: document.getElementById('hud-title'),
+        copy: document.getElementById('hud-copy'),
+        focus: document.getElementById('hud-focus'),
+        stage: document.getElementById('hud-stage'),
+        percent: document.getElementById('hud-percent'),
+        fill: document.getElementById('hud-fill'),
+    };
+
+    function setHudState(index, progress) {
+        const state = HUD_STATES[index] || HUD_STATES[0];
+        if (hud.mode) hud.mode.textContent = state.mode;
+        if (hud.title) hud.title.textContent = state.title;
+        if (hud.copy) hud.copy.textContent = state.copy;
+        if (hud.focus) hud.focus.textContent = state.focus;
+        if (hud.stage) hud.stage.textContent = `${String(index + 1).padStart(2, '0')} / 06`;
+        if (hud.percent) hud.percent.textContent = `${Math.round(progress * 100)}%`;
+        if (hud.fill) hud.fill.style.width = `${Math.round(progress * 100)}%`;
+    }
+
     // ─── BG Scenes ─────────────────────────────────────────────
 
     /* BG 0 – Binary Matrix */
@@ -264,6 +294,7 @@ function init() {
     // ─── Register Groups ─────────────────────────────────────
     const bgGroups = [bgHero(), bgAbout(), bgSkills(), bgProjects(), bgAchieve(), bgContact()];
     bgGroups.forEach((g, i) => { scene.add(g); setGroupAlpha(g, i === 0 ? 1 : 0); });
+    setHudState(0, 0);
 
     // ─── Loading Screen ───────────────────────────────────────
     window.addEventListener('load', () => {
@@ -365,6 +396,13 @@ function init() {
             if (droneLabel) droneLabel.textContent = pt.label;
             const sf = prog * (bgGroups.length - 1);
             bgGroups.forEach((g, i) => setGroupAlpha(g, Math.max(0, 1 - Math.abs(i - sf) * 2.2)));
+
+            const sectionIndex = Math.min(Math.round(sf), HUD_STATES.length - 1);
+            setHudState(sectionIndex, prog);
+            scene.rotation.y = (prog - 0.5) * 0.24;
+            camera.position.z = 12 - Math.sin(prog * Math.PI) * 1.5;
+            camera.position.x += Math.sin(prog * Math.PI * 2) * 0.015;
+            camera.position.y += Math.cos(prog * Math.PI * 2) * 0.01;
 
             // active nav link
             const si = Math.min(Math.round(prog * 5), 5);
@@ -507,7 +545,7 @@ function init() {
 
     const BOT = {
         skills: 'Saksham is skilled in Python, HTML/CSS/JS, AI/ML, Git, backend APIs, and Cybersecurity.',
-        project: 'He\'s built an AI Document Analyser, a 3D UI Component Library, and a Cyber Threat Detector. See the Projects section!',
+        project: 'He\'s built OmniQR Studio, a modern and high-performance QR Code generator using pure HTML5, CSS3, and JavaScript. See the Projects section!',
         education: 'Saksham is studying AI & Data Science (B.Tech) at RGGEC.',
         hackathon: 'Saksham regularly competes in hackathons, building real solutions under pressure.',
         contact: 'Email: tsaksham94189@gmail.com — or use the Contact form!',
