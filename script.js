@@ -44,12 +44,13 @@ function init() {
 
     // ─── Three.js Setup ────────────────────────────────────────
     const canvas = document.getElementById('bg-canvas');
-    if (!canvas) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, 0.1, 100);
     camera.position.set(0, 0, 12);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    const renderer = canvas
+        ? new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+        : new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -405,8 +406,10 @@ function init() {
             camera.position.y += Math.cos(prog * Math.PI * 2) * 0.01;
 
             // active nav link
-            const si = Math.min(Math.round(prog * 5), 5);
-            document.querySelectorAll('.nav-link').forEach((a, i) => a.classList.toggle('active', i === si));
+            const navLinks = document.querySelectorAll('.nav-link');
+            const maxIndex = Math.max(navLinks.length - 1, 0);
+            const si = Math.min(Math.round(prog * maxIndex), maxIndex);
+            navLinks.forEach((a, i) => a.classList.toggle('active', i === si));
         }
     });
 
@@ -534,11 +537,13 @@ function init() {
     const chatBody = document.getElementById('chat-body');
 
     chatToggle?.addEventListener('click', () => {
+        if (!chatContainer) return;
         chatContainer.classList.remove('hidden');
         chatToggle.style.display = 'none';
         chatInput?.focus();
     });
     closeChat?.addEventListener('click', () => {
+        if (!chatContainer) return;
         chatContainer.classList.add('hidden');
         setTimeout(() => { if (chatToggle) chatToggle.style.display = 'flex'; }, 380);
     });
@@ -550,7 +555,7 @@ function init() {
         hackathon: 'Saksham regularly competes in hackathons, building real solutions under pressure.',
         contact: 'Email: tsaksham94189@gmail.com — or use the Contact form!',
         linkedin: 'LinkedIn link is in the Contact section!',
-        github: 'GitHub link is in the Contact section!',
+        github: 'GitHub: https://github.com/Havoc-terminal',
         hello: 'Hey! 👋 Ask me about Saksham\'s skills, projects, or education.',
         hi: 'Hello! What would you like to know about Saksham?',
         thanks: 'You\'re welcome! Feel free to reach out anytime. 🚀',
